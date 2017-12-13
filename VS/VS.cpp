@@ -55,3 +55,26 @@ CImg<int> generateShare(CImg<int> &img){
 	return share;
 }
 
+CImg<int> generateImageKey(vector<int> key, int height, int width){
+	CImg<int> res(width, height, 1, 1, 1);
+	int fil = 0;
+	int col = 0;
+	for(int pos : key){
+		fil = pos / width;
+		col = pos % width;
+		res(col, fil, 0, 0) = 0;
+	}
+	return res;
+}
+
+vector<int> generateStegoKey(CImg<int> imageKey){
+	vector<int> res;
+	for(int i = 0; i < imageKey.height(); i++){
+		for(int j = 0; j < imageKey.width(); j++){
+			if(imageKey(j,i,0,0) == 0){
+				res.push_back(imageKey.width() * i + j);
+			}
+		}
+	}
+	return res;
+}
