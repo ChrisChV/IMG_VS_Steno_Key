@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <tuple>
+#include <fstream>
 #include "../CImg.h"
 #include "Utils.h"
 
@@ -53,4 +54,22 @@ int sToDecimal(string num){
 		if(num[i] == '1') res += pow(2,num.size() - 1 - i);
 	}
 	return res;
+}
+
+string addStringToFile(string file, string add){
+	string pre;
+	string post;
+	tie(pre, post) = getExtension(file);
+	return pre + add + "." + post;
+}
+
+
+string getMsgFromFile(string msgPath){
+	string msg = "";
+	ifstream archivo(msgPath.c_str());
+	char c;
+	while(archivo.get(c)){
+		msg.push_back(c);
+	}
+	return msg;
 }

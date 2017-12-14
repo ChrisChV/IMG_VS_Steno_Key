@@ -10,6 +10,8 @@ using namespace  std;
 
 namespace RC4{
 
+	string DELETE_REPEAT_ERROR = "Ya se utilizaron todos los numeros, no se puede eliminar repetidos";
+
 	vector<int> KSA(int sizeImage, vector<int> key){
 		vector<int> vectS(sizeImage);
 		vector<int> vectT(sizeImage);
@@ -58,7 +60,7 @@ namespace RC4{
 		}
 		while(true){
 			actualFalse++;
-			if(actualFalse == nums.size()) throw("Ya se utilizaron todos los numeros, no se puede eliminar repetidos");
+			if(actualFalse == nums.size()) throw(DELETE_REPEAT_ERROR);
 			if(nums[actualFalse] == false) break;
 		}
 		if(repetidos.empty()) cout<<"No hay repetidos"<<endl;
@@ -67,7 +69,7 @@ namespace RC4{
 			nums[actualFalse] = true;
 			while(true){
 				actualFalse++;
-				if(actualFalse == nums.size()) throw("Ya se utilizaron todos los numeros, no se puede eliminar repetidos");
+				if(actualFalse == nums.size()) throw(DELETE_REPEAT_ERROR);
 				if(nums[actualFalse] == false) break;
 			}
 		}

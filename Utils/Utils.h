@@ -13,6 +13,8 @@ tuple<string,string> getExtension(string file);
 string convertToBMP(string file);
 string toBinary(int num);
 int sToDecimal(string num);
+string addStringToFile(string file, string add);
+string getMsgFromFile(string msgPath);
 
 struct ThreadArg{
 	int ini;

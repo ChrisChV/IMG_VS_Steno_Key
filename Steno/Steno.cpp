@@ -111,9 +111,6 @@ vector<int> hideMsg(string msg, CImg<int> &img){
 	vector<int> stegoKey = RC4::getRC4Key(sizeImage, msgBinBlocks.size(), k);
 	RC4::deleteRepeat(stegoKey, sizeImage);
 	sort(stegoKey.begin(), stegoKey.end());
-	for(int i : stegoKey){
-		cout<<i<<endl;
-	}
 	for(int i = 0; i < stegoKey.size(); i++){
 		int pos = stegoKey[i];
 		fil = pos / img.width();

@@ -1,0 +1,7 @@
+HELP
+
+OPTIONS
+
+-h    Allow to hide a message inside a image. Format: -h <imagePath> <msgPath>
+-r    Allow to reveal a message that is inside a image. Format: -r <imagePath>
+-p    Compute PSNR with two images. Format: -p <imagePath1> <imagePath2>
