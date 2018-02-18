@@ -12,16 +12,18 @@ int main(int argc, char ** argv){
 			system(comm.c_str());
 		}
 		else if(option == "-h"){
-			if(argc != 4) throw("Faltan argumentos para -h, utilice help para mas info");
+			if(argc != 5) throw("Faltan argumentos para -h, utilice help para mas info");
 			string imagePath = argv[2];
 			string msgPath = argv[3];
-			string newImagePath = hide(msgPath, imagePath);
+			string tamLSB = argv[4];
+			string newImagePath = hide(msgPath, imagePath, stoi(tamLSB));
 			cout<<"El mensaje ha sido guardado en "<<newImagePath<<endl;
 		}
 		else if(option == "-r"){
-			if(argc != 3) throw("Faltan argumentos para -r, utilice help para mas info");
+			if(argc != 4) throw("Faltan argumentos para -r, utilice help para mas info");
 			string imagePath = argv[2];
-			string msg = reveal(imagePath);
+			string tamLSB = argv[3];
+			string msg = reveal(imagePath, stoi(tamLSB));
 			cout<<"El mensaje secreto es:"<<endl<<msg<<endl;
 		}
 		else if(option == "-p"){
@@ -30,6 +32,24 @@ int main(int argc, char ** argv){
 			string imagePath2 = argv[3];
 			double psnr = getPSRN(imagePath1, imagePath2);
 			cout<<psnr<<endl;
+		}
+		else if(option == "-c"){
+			if(argc != 4) throw("Faltan argumentos para -h, utilice help para mas info");
+			string imagePath = argv[2];
+			string tamLSB = argv[3];
+			double capacity = getCapacity(imagePath, stoi(tamLSB));
+			cout<<capacity<<endl;
+		}
+		else if(option == "-d"){
+			if(argc != 4) throw("Faltan argumentos para -h, utilice help para mas info");
+			string imagePath1 = argv[2];
+			string imagePath2 = argv[3];
+			display(imagePath1, imagePath2);
+		}
+		else if(option == "-k"){
+			if(argc != 3) throw("Faltan argumentos para -h, utilice help para mas info");
+			string imagePath = argv[2];
+			displayStegoKey(imagePath);	
 		}
 		else throw("La opcion no existe, utilice help para mas info");
 	}

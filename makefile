@@ -45,3 +45,4 @@ all:
 	make testVS
 	make testSteno
 	make testRC4
+	make main

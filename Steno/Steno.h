@@ -12,7 +12,7 @@ using namespace cimg_library;
 
 void hideShare(CImg<int> &img, CImg<int> &share);
 CImg<int> getShare(CImg<int> &img);
-vector<int> hideMsg(string msg, CImg<int> &img);
-string revealMsg(CImg<int> &img, vector<int> stegoKey);
+vector<int> hideMsg(string msg, CImg<int> &img, int tamLSB);
+string revealMsg(CImg<int> &img, vector<int> stegoKey, int tamLSB);
 
 #endif

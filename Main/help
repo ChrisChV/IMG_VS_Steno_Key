@@ -2,6 +2,9 @@ HELP
 
 OPTIONS
 
--h    Allow to hide a message inside a image. Format: -h <imagePath> <msgPath>
--r    Allow to reveal a message that is inside a image. Format: -r <imagePath>
+-h    Allow to hide a message inside a image. Format: -h <imagePath> <msgPath> <tamLSB>
+-r    Allow to reveal a message that is inside a image. Format: -r <imagePath> <tamLSB>
 -p    Compute PSNR with two images. Format: -p <imagePath1> <imagePath2>
+-c    Compute the capacity average of the pixels for hidden information. Format: -c <imagePath1> <tamLSB>
+-d    Display two images. Format: -d <imagePath1> <imagePath2>
+-k    Display the imageKey. Format: -k <imagePath>

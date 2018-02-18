@@ -79,7 +79,7 @@ CImg<int> getShare(CImg<int> &img){
 	return share;
 }
 
-vector<string> divideMsg(string msg){
+vector<string> divideMsg(string msg, int tamLSB){
 	vector<string> res;
 	int num = 0;
 	string byte = "";
@@ -87,17 +87,19 @@ vector<string> divideMsg(string msg){
 	for(char c : msg){
 		num = (int) c;
 		byte = toBinary(num);
-		for(int i = 0; i < BITS_PER_PIXEL; i+=2){
-			bloque.clear();
+		for(int i = 0; i < BITS_PER_CHARACTER; i++){
 			bloque.push_back(byte[i]);
-			bloque.push_back(byte[i + 1]);
-			res.push_back(bloque);
+			if(bloque.size() == tamLSB){
+				res.push_back(bloque);
+				bloque.clear();
+			}
 		}
 	}
+	if(bloque.size() != 0) res.push_back(bloque);
 	return res;
 }
 
-vector<int> hideMsg(string msg, CImg<int> &img){
+vector<int> hideMsg(string msg, CImg<int> &img, int tamLSB){
 	srand(time(NULL));
 	vector<int> k;
 	for(int i = 0; i < TAM_KEY; i++){
@@ -107,7 +109,7 @@ vector<int> hideMsg(string msg, CImg<int> &img){
 	int fil = 0;
 	int col = 0;
 	int sizeImage = img.width() * img.height();
-	vector<string> msgBinBlocks = divideMsg(msg);
+	vector<string> msgBinBlocks = divideMsg(msg, tamLSB);
 	vector<int> stegoKey = RC4::getRC4Key(sizeImage, msgBinBlocks.size(), k);
 	RC4::deleteRepeat(stegoKey, sizeImage);
 	sort(stegoKey.begin(), stegoKey.end());
@@ -116,8 +118,9 @@ vector<int> hideMsg(string msg, CImg<int> &img){
 		fil = pos / img.width();
 		col = pos % img.width();
 		byte = toBinary(img(col, fil, 0, 0));
-		byte[BITS_PER_PIXEL - 2] = msgBinBlocks[i][0];
-		byte[BITS_PER_PIXEL - 1] = msgBinBlocks[i][1];
+		for(int j = 0; j < msgBinBlocks[i].size(); j++){
+			byte[BITS_PER_PIXEL - (j+1)] = msgBinBlocks[i][j];
+		}
 		img(col, fil, 0, 0) = sToDecimal(byte);
 	}
 	return stegoKey;
@@ -126,17 +129,21 @@ vector<int> hideMsg(string msg, CImg<int> &img){
 string linkMsg(vector<string> msgBinBlocks){
 	string msg = "";
 	string byte = "";
-	for(int i = 0; i < msgBinBlocks.size(); i+=4){
-		byte = msgBinBlocks[i];
-		byte = byte + msgBinBlocks[i + 1];
-		byte = byte + msgBinBlocks[i + 2];
-		byte = byte + msgBinBlocks[i + 3];
-		msg.push_back((char) sToDecimal(byte));
+	int i = 0;
+	for(string block : msgBinBlocks){
+		for(char c : block){
+			byte.push_back(c);
+			i++;
+			if(i == BITS_PER_CHARACTER){
+				i = 0;
+				msg.push_back((char) sToDecimal(byte));
+			}
+		}
 	}
 	return msg;
 }
 
-string revealMsg(CImg<int> &img, vector<int> stegoKey){
+string revealMsg(CImg<int> &img, vector<int> stegoKey, int tamLSB){
 	int fil = 0;
 	int col = 0;
 	string byte = "";
@@ -147,8 +154,9 @@ string revealMsg(CImg<int> &img, vector<int> stegoKey){
 		col = pos % img.width();
 		msgBlock.clear();
 		byte = toBinary(img(col, fil, 0, 0));
-		msgBlock.push_back(byte[BITS_PER_PIXEL - 2]);
-		msgBlock.push_back(byte[BITS_PER_PIXEL - 1]);
+		for(int i = 0; i < tamLSB; i++){
+			msgBlock.push_back(byte[BITS_PER_PIXEL - (i+1)]);	
+		}
 		msgBinBlocks.push_back(msgBlock);
 	}
 	return linkMsg(msgBinBlocks);
